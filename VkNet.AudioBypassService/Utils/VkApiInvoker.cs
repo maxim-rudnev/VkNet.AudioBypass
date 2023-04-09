@@ -47,13 +47,23 @@ namespace VkNet.AudioBypassService.Utils
 				parameters.Add("v", _versionManager.Version);
 			}
 
+			ulong? captchaSid = null;
+			string captchaKey = null;
+
+			try
+			{
+				captchaSid = ulong.Parse(parameters["captcha_sid"]);
+				captchaKey = parameters["captcha_key"];
+			}
+			catch (System.Exception ex) { }
+
 			var response = await _captchaHandler.Perform((sid, key) =>
 			{
 				parameters.Add("captcha_sid", sid);
 				parameters.Add("captcha_key", key);
 
 				return InvokeAsyncInternal(uri, parameters, cancellationToken).ConfigureAwait(false);
-			});
+			}, captchaSid, captchaKey);
 
 			return JToken.Parse(response);
 		}

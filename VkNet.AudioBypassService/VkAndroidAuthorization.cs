@@ -84,7 +84,9 @@ namespace VkNet.AudioBypassService
 					{ "password", _apiAuthParams.Password },
 					{ "code", _apiAuthParams.Code },
 					{ "scope", "all" },
-					{ "device_id", RandomString.Generate(16) }
+					{ "device_id", RandomString.Generate(16) },
+					{ "captcha_sid", _apiAuthParams.CaptchaSid },
+					{ "captcha_key", _apiAuthParams.CaptchaKey }
 				};
 
 				return await _vkApiInvoker.CallAsync<AuthorizationResult>(new Uri("https://oauth.vk.com/token"), parameters).ConfigureAwait(false);
